@@ -31,8 +31,6 @@ import datetime
 import logging
 import os
 
-import google3
-
 import dateutil.parser
 import dateutil.tz
 

@@ -24,8 +24,6 @@ import os
 import socket
 import ssl
 
-import google3
-
 from apiclient import errors as gerrors
 from apiclient.discovery import build
 import apiclient.http
