@@ -51,12 +51,15 @@ logger = logging.getLogger(__name__)
 class AndroidComputeClient(gcompute_client.ComputeClient):
     """Client that manages Anadroid Virtual Device."""
 
-    INSTANCE_NAME_FMT = "{build_target}-{build_id}-{uuid}"
-    IMAGE_NAME_FMT = "image-{build_target}-{build_id}-{uuid}"
-    DATA_DISK_NAME_FMT = "{instance}-data"
+    INSTANCE_NAME_FMT = "ins-{uuid}-{build_id}-{build_target}"
+    IMAGE_NAME_FMT = "img-{uuid}-{build_id}-{build_target}"
+    DATA_DISK_NAME_FMT = "data-{instance}"
     BOOT_COMPLETED_MSG = "VIRTUAL_DEVICE_BOOT_COMPLETED"
     BOOT_TIMEOUT_SECS = 5 * 60  # 5 mins, usually it should take ~2 mins
     BOOT_CHECK_INTERVAL_SECS = 10
+    NAME_LENGTH_LIMIT = 63
+    # If the generated name ends with '-', replace it with REPLACER.
+    REPLACER = "e"
 
     def __init__(self, acloud_config, oauth2_credentials):
         """Initialize.
@@ -74,6 +77,28 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
         self._orientation = acloud_config.orientation
         self._resolution = acloud_config.resolution
         self._metadata = acloud_config.metadata_variable.copy()
+
+    @classmethod
+    def _FormalizeName(cls, name):
+        """Formalize the name to comply with RFC1035.
+
+        The name must be 1-63 characters long and match the regular expression
+        [a-z]([-a-z0-9]*[a-z0-9])? which means the first character must be a
+        lowercase letter, and all following characters must be a dash,
+        lowercase letter, or digit, except the last character, which cannot be
+        a dash.
+
+        Args:
+          name: A string.
+
+        Returns:
+          name: A string that complies with RFC1035.
+        """
+        name = name.replace("_", "-").lower()
+        name = name[:cls.NAME_LENGTH_LIMIT]
+        if name[-1] == "-":
+          name = name[:-1] + cls.REPLACER
+        return name
 
     def _CheckMachineSize(self):
         """Check machine size.
@@ -107,7 +132,7 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
         name = cls.IMAGE_NAME_FMT.format(build_target=build_target,
                                          build_id=build_id,
                                          uuid=uuid.uuid4().hex[:8])
-        return name.replace("_", "-").lower()
+        return cls._FormalizeName(name)
 
     @classmethod
     def GetDataDiskName(cls, instance):
@@ -119,7 +144,8 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
         Returns:
             The corresponding data disk name.
         """
-        return cls.DATA_DISK_NAME_FMT.format(instance=instance)
+        name = cls.DATA_DISK_NAME_FMT.format(instance=instance)
+        return cls._FormalizeName(name)
 
     @classmethod
     def GenerateInstanceName(cls, build_target=None, build_id=None):
@@ -136,10 +162,11 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
         """
         if not build_target and not build_id:
             return "instance-" + uuid.uuid4().hex
-        return cls.INSTANCE_NAME_FMT.format(
+        name = cls.INSTANCE_NAME_FMT.format(
             build_target=build_target,
             build_id=build_id,
             uuid=uuid.uuid4().hex[:8]).replace("_", "-").lower()
+        return cls._FormalizeName(name)
 
     def CreateDisk(self, disk_name, source_image, size_gb):
         """Create a gce disk.
