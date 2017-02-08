@@ -30,8 +30,6 @@ import functools
 import logging
 import os
 
-import google3
-
 from acloud.internal.lib import base_cloud_client
 from acloud.internal.lib import utils
 from acloud.public import errors

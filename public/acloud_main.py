@@ -74,7 +74,7 @@ from acloud.public import device_driver
 from acloud.public import errors
 
 LOGGING_FMT = "%(asctime)s |%(levelname)s| %(module)s:%(lineno)s| %(message)s"
-LOGGER_NAME = "google3.cloud.android.driver"
+LOGGER_NAME = "acloud_main"
 
 # Commands
 CMD_CREATE = "create"
@@ -349,3 +349,7 @@ def main(argv):
         sys.stderr.write("Encountered the following errors:\n%s\n" % msg)
         return 1
     return 0
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
