@@ -348,9 +348,8 @@ def CreateAndroidVirtualDevices(cfg,
         cleanup: boolean, if True clean up compute engine image and
                  disk image in storage after creating the instance.
         serial_log_file: A path to a file where serial output should
-                         be saved to. Logs will be fetch only on boot failure.
+                         be saved to.
         logcat_file: A path to a file where logcat logs should be saved.
-                     Logs will be fetch only on boot failure.
 
     Returns:
         A Report instance.
@@ -388,15 +387,17 @@ def CreateAndroidVirtualDevices(cfg,
 
         # Dump serial and logcat logs.
         if serial_log_file:
-            _FetchSerialLogsFromDevices(compute_client,
-                                        instance_names=failures.keys(),
-                                        port=constants.DEFAULT_SERIAL_PORT,
-                                        output_file=serial_log_file)
+            _FetchSerialLogsFromDevices(
+                compute_client,
+                instance_names=[d.instance_name for d in device_pool.devices],
+                port=constants.DEFAULT_SERIAL_PORT,
+                output_file=serial_log_file)
         if logcat_file:
-            _FetchSerialLogsFromDevices(compute_client,
-                                        instance_names=failures.keys(),
-                                        port=constants.LOGCAT_SERIAL_PORT,
-                                        output_file=logcat_file)
+            _FetchSerialLogsFromDevices(
+                compute_client,
+                instance_names=[d.instance_name for d in device_pool.devices],
+                port=constants.LOGCAT_SERIAL_PORT,
+                output_file=logcat_file)
     except errors.DriverError as e:
         r.AddError(str(e))
         r.SetStatus(report.Status.FAIL)
