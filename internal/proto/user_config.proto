@@ -30,20 +30,21 @@ message UserConfig {
   // Compute Engine network name, e.g. "default"
   optional string network = 6;
 
-  // SSH configuration
+  // SSH key configuration
   optional string ssh_private_key_path = 7;
+  optional string ssh_public_key_path = 8;
 
   // Storage configuration
-  optional string storage_bucket_name = 8;
+  optional string storage_bucket_name = 9;
 
   // Desired orientation, e.g. 'portrait' or 'landscape'
-  optional string orientation = 9;
+  optional string orientation = 10;
   // Desired resolution
-  optional string resolution = 10;
+  optional string resolution = 11;
   // Size of extra data disk.
-  optional int32 extra_data_disk_size_gb = 11;
+  optional int32 extra_data_disk_size_gb = 12;
   // Metadata for creating Compute Engine instance
-  map <string, string>  metadata_variable = 12;
+  map <string, string>  metadata_variable = 13;
 
   // client_id and client secret are required when user authenticates via
   // Oauth2 flow with their user account (not service account).
@@ -56,6 +57,6 @@ message UserConfig {
   //     don't trust.
   //   * All users talking to the same cloud project can share the same
   //     client_id and client_secret.
-  optional string client_id = 13;
-  optional string client_secret = 14;
+  optional string client_id = 14;
+  optional string client_secret = 15;
 }

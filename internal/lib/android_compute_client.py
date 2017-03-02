@@ -37,6 +37,7 @@ TODO(fdeng):
   with this module, update callers of gce_manager.py to use this module.
 """
 
+import getpass
 import logging
 import os
 import uuid
@@ -77,6 +78,7 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
         self._orientation = acloud_config.orientation
         self._resolution = acloud_config.resolution
         self._metadata = acloud_config.metadata_variable.copy()
+        self._ssh_public_key_path = acloud_config.ssh_public_key_path
 
     @classmethod
     def _FormalizeName(cls, name):
@@ -221,6 +223,31 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
             "deviceName": extra_disk_name,
         }]
 
+    @staticmethod
+    def _LoadSshPublicKey(ssh_public_key_path):
+        """Load the content of ssh public key from a file.
+
+        Args:
+            ssh_public_key_path: String, path to the public key file.
+                               E.g. ~/.ssh/acloud_rsa.pub
+        Returns:
+            String, content of the file.
+
+        Raises:
+            errors.DriverError if the public key file does not exist
+            or the content is not valid.
+        """
+        key_path = os.path.expanduser(ssh_public_key_path)
+        if not os.path.exists(key_path):
+            raise errors.DriverError(
+                "SSH public key file %s does not exist." % key_path)
+
+        with open(key_path) as f:
+            rsa = f.read()
+            rsa = rsa.strip() if rsa else rsa
+            utils.VerifyRsaPubKey(rsa)
+        return rsa
+
     def CreateInstance(self, instance, image_name, extra_disk_name=None):
         """Create a gce instance given an gce image.
 
@@ -235,6 +262,19 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
         metadata = self._metadata.copy()
         metadata["cfg_sta_display_resolution"] = self._resolution
         metadata["t_force_orientation"] = self._orientation
+
+        # Add per-instance ssh key
+        if self._ssh_public_key_path:
+            rsa = self._LoadSshPublicKey(self._ssh_public_key_path)
+            logger.info("ssh_public_key_path is specified in config: %s, "
+                        "will add the key to the instance.",
+                        self._ssh_public_key_path)
+            metadata["sshKeys"] = "%s:%s" % (getpass.getuser(), rsa)
+        else:
+            logger.warning(
+                "ssh_public_key_path is not specified in config, "
+                "only project-wide key will be effective.")
+
         super(AndroidComputeClient, self).CreateInstance(
             instance, image_name, self._machine_type, metadata, self._network,
             self._zone, disk_args)
@@ -254,7 +294,7 @@ class AndroidComputeClient(gcompute_client.ComputeClient):
                 instance=instance, port=1)
         except errors.HttpError as e:
             if e.code == 400:
-                logging.debug("CheckBoot: Instance is not ready yet %s",
+                logger.debug("CheckBoot: Instance is not ready yet %s",
                               str(e))
                 return False
             raise

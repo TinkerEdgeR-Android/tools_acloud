@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Cloud Android Driver.
+r"""Cloud Android Driver.
 
 This CLI manages google compute engine project for android devices.
 
@@ -51,13 +51,13 @@ This CLI manages google compute engine project for android devices.
 - Example calls:
   - Create two instances:
   $ acloud.par create
-    --build_target gce_x86_phone-userdebug
-    --build_id 2305447 --num 2 --config_file /path/to/acloud.config
+    --build_target gce_x86_phone-userdebug_fastbuild3c_linux \
+    --build_id 3744001 --num 2 --config_file /path/to/acloud.config \
     --report_file /tmp/acloud_report.json --log_file /tmp/acloud.log
 
   - Delete two instances:
   $ acloud.par delete --instance_names
-    gce-x86-userdebug-2272605-43f9b2c6 gce-x86-userdebug-2272605-20f93a5
+    ins-b638cdba-3744001-gce-x86-phone-userdebug-fastbuild3c-linux
     --config_file /path/to/acloud.config
     --report_file /tmp/acloud_report.json --log_file /tmp/acloud.log
 """

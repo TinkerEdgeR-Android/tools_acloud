@@ -86,6 +86,7 @@ class AcloudConfig(object):
         self.network = (usr_cfg.network or
                         internal_cfg.default_usr_cfg.network)
         self.ssh_private_key_path = usr_cfg.ssh_private_key_path
+        self.ssh_public_key_path = usr_cfg.ssh_public_key_path
         self.storage_bucket_name = usr_cfg.storage_bucket_name
         self.metadata_variable = {
             key: val

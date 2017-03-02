@@ -33,6 +33,7 @@ class AndroidComputeClientTest(driver_test_lib.BaseDriverTest):
     PROJECT = "fake-project"
     SERVICE_ACCOUNT_NAME = "fake@fake.com"
     PRIVATE_KEY_PATH = "/fake/key/path"
+    SSH_PUBLIC_KEY_PATH = ""
     IMAGE = "fake-image"
     GS_IMAGE_SOURCE_URI = "https://storage.googleapis.com/fake-bucket/fake.tar.gz"
     MACHINE_TYPE = "fake-machine-type"
@@ -56,6 +57,7 @@ class AndroidComputeClientTest(driver_test_lib.BaseDriverTest):
         fake_cfg.project = self.PROJECT
         fake_cfg.service_account_name = self.SERVICE_ACCOUNT_NAME
         fake_cfg.service_account_private_key_path = self.PRIVATE_KEY_PATH
+        fake_cfg.ssh_public_key_path = self.SSH_PUBLIC_KEY_PATH
         fake_cfg.zone = self.ZONE
         fake_cfg.machine_type = self.MACHINE_TYPE
         fake_cfg.min_machine_size = self.MIN_MACHINE_SIZE
