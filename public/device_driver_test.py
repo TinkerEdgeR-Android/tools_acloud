@@ -24,7 +24,7 @@ import mock
 
 import unittest
 from acloud.internal.lib import auth
-from acloud.internal.lib import andorid_build_client
+from acloud.internal.lib import android_build_client
 from acloud.internal.lib import android_compute_client
 from acloud.internal.lib import driver_test_lib
 from acloud.internal.lib import gstorage_client
