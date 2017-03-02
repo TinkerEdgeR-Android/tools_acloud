@@ -11,4 +11,9 @@ Devices on Google Compute Engine) instantiated by using the Android source code
     `$ pip install acloud.zip`
 
 #3. Execution:
+
     `$ acloud <flags>
+
+To run all unit tests:
+
+    `$ tools\acloud\run_tests.sh`
