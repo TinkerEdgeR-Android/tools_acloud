@@ -64,6 +64,8 @@ class DeviceDriverTest(driver_test_lib.BaseDriverTest):
             4: "extradisk-image-4gb",
             10: "extradisk-image-10gb"
         }
+        cfg.ssh_private_key_path = ""
+        cfg.ssh_public_key_path = ""
 
         return cfg
 

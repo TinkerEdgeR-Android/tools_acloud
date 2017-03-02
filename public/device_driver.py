@@ -322,6 +322,36 @@ def _FetchSerialLogsFromDevices(compute_client, instance_names, output_file,
         utils.MakeTarFile(src_dict, output_file)
 
 
+def _CreateSshKeyPairIfNecessary(cfg):
+    """Create ssh key pair if necessary.
+
+    Args:
+        cfg: An Acloudconfig instance.
+
+    Raises:
+        error.DriverError: If it falls into an unexpected condition.
+    """
+    if not cfg.ssh_public_key_path:
+        logger.warning("ssh_public_key_path is not specified in acloud config. "
+                       "Project-wide public key will "
+                       "be used when creating AVD instances. "
+                       "Please ensure you have the correct private half of "
+                       "a project-wide public key if you want to ssh into the "
+                       "instances after creation.")
+    elif cfg.ssh_public_key_path and not cfg.ssh_private_key_path:
+        logger.warning("Only ssh_public_key_path is specified in acloud config,"
+                       " but ssh_private_key_path is missing. "
+                       "Please ensure you have the correct private half "
+                       "if you want to ssh into the instances after creation.")
+    elif cfg.ssh_public_key_path and cfg.ssh_private_key_path:
+        utils.CreateSshKeyPairIfNotExist(
+                cfg.ssh_private_key_path, cfg.ssh_public_key_path)
+    else:
+        # Should never reach here.
+        raise errors.DriverError(
+                "Unexpected error in _CreateSshKeyPairIfNecessary")
+
+
 def CreateAndroidVirtualDevices(cfg,
                                 build_target=None,
                                 build_id=None,
@@ -357,6 +387,7 @@ def CreateAndroidVirtualDevices(cfg,
     compute_client = android_compute_client.AndroidComputeClient(cfg,
                                                                  credentials)
     try:
+        _CreateSshKeyPairIfNecessary(cfg)
         device_pool = AndroidVirtualDevicePool(cfg)
         device_pool.CreateDevices(
             num,

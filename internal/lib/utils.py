@@ -26,10 +26,12 @@ The following code is copied from chromite with modifications.
 import base64
 import binascii
 import errno
+import getpass
 import logging
 import os
 import shutil
 import struct
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -38,7 +40,11 @@ import uuid
 
 from acloud.public import errors
 
+
 logger = logging.getLogger(__name__)
+
+
+SSH_KEYGEN_CMD = ["ssh-keygen", "-t", "rsa", "-b", "4096"]
 
 
 class TempDir(object):
@@ -293,6 +299,60 @@ def MakeTarFile(src_dict, dest):
     with tarfile.open(dest, "w:gz") as tar:
         for src, arcname in src_dict.iteritems():
             tar.add(src, arcname=arcname)
+
+
+def CreateSshKeyPairIfNotExist(private_key_path, public_key_path):
+    """Create the ssh key pair if they don't exist.
+
+    Check if the public and private key pairs exist at
+    the given places. If not, create them.
+
+    Args:
+        private_key_path: Path to the private key file.
+                          e.g. ~/.ssh/acloud_rsa
+        public_key_path: Path to the public key file.
+                         e.g. ~/.ssh/acloud_rsa.pub
+    Raises:
+        error.DriverError: If failed to create the key pair.
+    """
+    public_key_path = os.path.expanduser(public_key_path)
+    private_key_path = os.path.expanduser(private_key_path)
+    create_key = (
+            not os.path.exists(public_key_path) and
+            not os.path.exists(private_key_path))
+    if not create_key:
+        logger.debug("The ssh private key (%s) or public key (%s) already exist,"
+                     "will not automatically create the key pairs.",
+                     private_key_path, public_key_path)
+        return
+    cmd = SSH_KEYGEN_CMD + ["-C", getpass.getuser(), "-f", private_key_path]
+    logger.info("The ssh private key (%s) and public key (%s) do not exist, "
+                "automatically creating key pair, calling: %s",
+                private_key_path, public_key_path, " ".join(cmd))
+    try:
+        subprocess.check_call(cmd, stdout=sys.stderr, stderr=sys.stdout)
+    except subprocess.CalledProcessError as e:
+        raise errors.DriverError(
+                "Failed to create ssh key pair: %s" % str(e))
+    except OSError as e:
+        raise errors.DriverError(
+                "Failed to create ssh key pair, please make sure "
+                "'ssh-keygen' is installed: %s" % str(e))
+
+    # By default ssh-keygen will create a public key file
+    # by append .pub to the private key file name. Rename it
+    # to what's requested by public_key_path.
+    default_pub_key_path = "%s.pub" % private_key_path
+    try:
+        if default_pub_key_path != public_key_path:
+            os.rename(default_pub_key_path, public_key_path)
+    except OSError as e:
+        raise errors.DriverError(
+                "Failed to rename %s to %s: %s" %
+                (default_pub_key_path, public_key_path, str(e)))
+
+    logger.info("Created ssh private key (%s) and public key (%s)",
+                private_key_path, public_key_path)
 
 
 def VerifyRsaPubKey(rsa):

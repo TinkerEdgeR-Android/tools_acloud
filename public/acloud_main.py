@@ -33,7 +33,8 @@ This CLI manages google compute engine project for android devices.
      client_secret: <client secret for the client id>
 
      # Optional
-     ssh_private_key_path: ""
+     ssh_private_key_path: "~/.ssh/acloud_rsa"
+     ssh_public_key_path: "~/.ssh/acloud_rsa.pub"
      orientation: "portrait"
      resolution: "800x1280x32x213"
      network: "default"
@@ -80,7 +81,7 @@ LOGGER_NAME = "acloud_main"
 CMD_CREATE = "create"
 CMD_DELETE = "delete"
 CMD_CLEANUP = "cleanup"
-CMD_SSHKEY = "sshkey"
+CMD_SSHKEY = "project_sshkey"
 
 
 def _ParseArgs(args):
@@ -195,7 +196,7 @@ def _ParseArgs(args):
         "images that are older than |expiration_mins|.")
     subparser_list.append(cleanup_parser)
 
-    # Command "sshkey"
+    # Command "project_sshkey"
     sshkey_parser = subparsers.add_parser(CMD_SSHKEY)
     sshkey_parser.required = False
     sshkey_parser.set_defaults(which=CMD_SSHKEY)
@@ -211,7 +212,8 @@ def _ParseArgs(args):
         type=str,
         dest="ssh_rsa_path",
         required=True,
-        help="Absolute path to the file that contains the public rsa key.")
+        help="Absolute path to the file that contains the public rsa key "
+             "that will be added as project-wide ssh key.")
     subparser_list.append(sshkey_parser)
 
     # Add common arguments.
