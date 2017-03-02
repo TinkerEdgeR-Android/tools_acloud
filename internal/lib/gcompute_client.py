@@ -26,6 +26,7 @@ Design philosophy: We tried to make ComputeClient as stateless as possible,
 and it only keeps states about authentication. ComputeClient should be very
 generic, and only knows how to talk to Compute Engine APIs.
 """
+import copy
 import functools
 import logging
 import os
@@ -60,6 +61,7 @@ class ComputeClient(base_cloud_client.BaseCloudApiClient):
     OPERATION_TIMEOUT_SECS = 15 * 60  # 15 mins
     OPERATION_POLL_INTERVAL_SECS = 5
     MACHINE_SIZE_METRICS = ["guestCpus", "memoryMb"]
+    ACCESS_DENIED_CODE = 403
 
     def __init__(self, acloud_config, oauth2_credentials):
         """Initialize.
@@ -1015,3 +1017,25 @@ class ComputeClient(base_cloud_client.BaseCloudApiClient):
         sshkey_item["value"] = "\n".join([sshkey_item["value"].strip(), entry
                                           ]).strip()
         self.SetCommonInstanceMetadata(metadata)
+
+    def CheckAccess(self):
+        """Check if the user has read access to the cloud project.
+
+        Returns:
+            True if the user has at least read access to the project.
+            False otherwise.
+
+        Raises:
+            errors.HttpError if other unexpected error happens when
+            accessing the project.
+        """
+        api = self.service.zones().list(project=self._project)
+        retry_http_codes = copy.copy(self.RETRY_HTTP_CODES)
+        retry_http_codes.remove(self.ACCESS_DENIED_CODE)
+        try:
+            self.Execute(api, retry_http_codes=retry_http_codes)
+        except errors.HttpError as e:
+            if e.code == self.ACCESS_DENIED_CODE:
+                return False
+            raise
+        return True

@@ -105,6 +105,9 @@ class AcloudConfig(object):
             for device, orientation in
             internal_cfg.device_default_orientation_map.iteritems()
         }
+        self.no_project_access_msg_map = {
+            project: msg for project, msg
+            in internal_cfg.no_project_access_msg_map.iteritems()}
         self.min_machine_size = internal_cfg.min_machine_size
         self.disk_image_name = internal_cfg.disk_image_name
         self.disk_image_mime_type = internal_cfg.disk_image_mime_type

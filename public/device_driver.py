@@ -563,3 +563,21 @@ def AddSshRsa(cfg, user, ssh_rsa_path):
         r.AddError(str(e))
         r.SetStatus(report.Status.FAIL)
     return r
+
+
+def CheckAccess(cfg):
+    """Check if user has access.
+
+    Args:
+         cfg: An AcloudConfig instance.
+    """
+    credentials = auth.CreateCredentials(cfg, ALL_SCOPES)
+    compute_client = android_compute_client.AndroidComputeClient(
+            cfg, credentials)
+    logger.info("Checking if user has access to project %s", cfg.project)
+    if not compute_client.CheckAccess():
+        logger.error("User does not have access to project %s", cfg.project)
+        # Print here so that command line user can see it.
+        print "Looks like you do not have access to %s. " % cfg.project
+        if cfg.project in cfg.no_project_access_msg_map:
+            print cfg.no_project_access_msg_map[cfg.project]

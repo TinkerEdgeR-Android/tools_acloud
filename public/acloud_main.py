@@ -321,6 +321,9 @@ def main(argv):
     cfg = config_mgr.Load()
     cfg.OverrideWithArgs(args)
 
+    # Check access.
+    device_driver.CheckAccess(cfg)
+
     if args.which == CMD_CREATE:
         report = device_driver.CreateAndroidVirtualDevices(
             cfg,
