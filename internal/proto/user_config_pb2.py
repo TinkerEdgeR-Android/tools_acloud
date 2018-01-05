@@ -19,9 +19,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='user_config.proto',
   package='acloud.internal.proto',
   syntax='proto2',
-  serialized_pb=_b('\n\x11user_config.proto\x12\x15\x61\x63loud.internal.proto\"\xd6\x03\n\nUserConfig\x12\x1c\n\x14service_account_name\x18\x01 \x01(\t\x12(\n service_account_private_key_path\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x0c\n\x04zone\x18\x04 \x01(\t\x12\x14\n\x0cmachine_type\x18\x05 \x01(\t\x12\x0f\n\x07network\x18\x06 \x01(\t\x12\x1c\n\x14ssh_private_key_path\x18\x07 \x01(\t\x12\x1b\n\x13storage_bucket_name\x18\x08 \x01(\t\x12\x13\n\x0borientation\x18\t \x01(\t\x12\x12\n\nresolution\x18\n \x01(\t\x12\x1f\n\x17\x65xtra_data_disk_size_gb\x18\x0b \x01(\x05\x12R\n\x11metadata_variable\x18\x0c \x03(\x0b\x32\x37.acloud.internal.proto.UserConfig.MetadataVariableEntry\x12\x11\n\tclient_id\x18\r \x01(\t\x12\x15\n\rclient_secret\x18\x0e \x01(\t\x1a\x37\n\x15MetadataVariableEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01')
+  serialized_pb=_b('\n\x11user_config.proto\x12\x15\x61\x63loud.internal.proto\"\xf3\x03\n\nUserConfig\x12\x1c\n\x14service_account_name\x18\x01 \x01(\t\x12(\n service_account_private_key_path\x18\x02 \x01(\t\x12\x0f\n\x07project\x18\x03 \x01(\t\x12\x0c\n\x04zone\x18\x04 \x01(\t\x12\x14\n\x0cmachine_type\x18\x05 \x01(\t\x12\x0f\n\x07network\x18\x06 \x01(\t\x12\x1c\n\x14ssh_private_key_path\x18\x07 \x01(\t\x12\x1b\n\x13ssh_public_key_path\x18\x08 \x01(\t\x12\x1b\n\x13storage_bucket_name\x18\t \x01(\t\x12\x13\n\x0borientation\x18\n \x01(\t\x12\x12\n\nresolution\x18\x0b \x01(\t\x12\x1f\n\x17\x65xtra_data_disk_size_gb\x18\x0c \x01(\x05\x12R\n\x11metadata_variable\x18\r \x03(\x0b\x32\x37.acloud.internal.proto.UserConfig.MetadataVariableEntry\x12\x11\n\tclient_id\x18\x0e \x01(\t\x12\x15\n\rclient_secret\x18\x0f \x01(\t\x1a\x37\n\x15MetadataVariableEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01')
 )
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -39,14 +38,14 @@ _USERCONFIG_METADATAVARIABLEENTRY = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='value', full_name='acloud.internal.proto.UserConfig.MetadataVariableEntry.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -59,8 +58,8 @@ _USERCONFIG_METADATAVARIABLEENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=460,
-  serialized_end=515,
+  serialized_start=489,
+  serialized_end=544,
 )
 
 _USERCONFIG = _descriptor.Descriptor(
@@ -76,98 +75,105 @@ _USERCONFIG = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='service_account_private_key_path', full_name='acloud.internal.proto.UserConfig.service_account_private_key_path', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='project', full_name='acloud.internal.proto.UserConfig.project', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='zone', full_name='acloud.internal.proto.UserConfig.zone', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='machine_type', full_name='acloud.internal.proto.UserConfig.machine_type', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='network', full_name='acloud.internal.proto.UserConfig.network', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ssh_private_key_path', full_name='acloud.internal.proto.UserConfig.ssh_private_key_path', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='storage_bucket_name', full_name='acloud.internal.proto.UserConfig.storage_bucket_name', index=7,
+      name='ssh_public_key_path', full_name='acloud.internal.proto.UserConfig.ssh_public_key_path', index=7,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='orientation', full_name='acloud.internal.proto.UserConfig.orientation', index=8,
+      name='storage_bucket_name', full_name='acloud.internal.proto.UserConfig.storage_bucket_name', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='resolution', full_name='acloud.internal.proto.UserConfig.resolution', index=9,
+      name='orientation', full_name='acloud.internal.proto.UserConfig.orientation', index=9,
       number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='extra_data_disk_size_gb', full_name='acloud.internal.proto.UserConfig.extra_data_disk_size_gb', index=10,
-      number=11, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='metadata_variable', full_name='acloud.internal.proto.UserConfig.metadata_variable', index=11,
-      number=12, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='client_id', full_name='acloud.internal.proto.UserConfig.client_id', index=12,
-      number=13, type=9, cpp_type=9, label=1,
+      name='resolution', full_name='acloud.internal.proto.UserConfig.resolution', index=10,
+      number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='client_secret', full_name='acloud.internal.proto.UserConfig.client_secret', index=13,
+      name='extra_data_disk_size_gb', full_name='acloud.internal.proto.UserConfig.extra_data_disk_size_gb', index=11,
+      number=12, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='metadata_variable', full_name='acloud.internal.proto.UserConfig.metadata_variable', index=12,
+      number=13, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='client_id', full_name='acloud.internal.proto.UserConfig.client_id', index=13,
       number=14, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='client_secret', full_name='acloud.internal.proto.UserConfig.client_secret', index=14,
+      number=15, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -181,12 +187,13 @@ _USERCONFIG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=45,
-  serialized_end=515,
+  serialized_end=544,
 )
 
 _USERCONFIG_METADATAVARIABLEENTRY.containing_type = _USERCONFIG
 _USERCONFIG.fields_by_name['metadata_variable'].message_type = _USERCONFIG_METADATAVARIABLEENTRY
 DESCRIPTOR.message_types_by_name['UserConfig'] = _USERCONFIG
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 UserConfig = _reflection.GeneratedProtocolMessageType('UserConfig', (_message.Message,), dict(
 
