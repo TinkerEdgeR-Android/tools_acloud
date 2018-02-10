@@ -82,14 +82,15 @@ class BaseCloudApiClient(object):
             An apiclient.discovery.Resource object
         """
         http_auth = oauth2_credentials.authorize(httplib2.Http())
-        return utils.RetryException(exc_retry=cls.RETRIABLE_AUTH_ERRORS,
-                                    max_retry=cls.RETRY_COUNT,
-                                    functor=build,
-                                    sleep=cls.RETRY_SLEEP_MULTIPLIER,
-                                    backoff_factor=cls.RETRY_BACKOFF_FACTOR,
-                                    serviceName=cls.API_NAME,
-                                    version=cls.API_VERSION,
-                                    http=http_auth)
+        return utils.RetryExceptionType(
+                exception_types=cls.RETRIABLE_AUTH_ERRORS,
+                max_retries=cls.RETRY_COUNT,
+                functor=build,
+                sleep_multiplier=cls.RETRY_SLEEP_MULTIPLIER,
+                retry_backoff_factor=cls.RETRY_BACKOFF_FACTOR,
+                serviceName=cls.API_NAME,
+                version=cls.API_VERSION,
+                http=http_auth)
 
     def _ShouldRetry(self, exception, retry_http_codes,
                      other_retriable_errors):
@@ -172,9 +173,9 @@ class BaseCloudApiClient(object):
         Args:
             api: An apiclient.http.HttpRequest, representing the api to execute:
             retry_http_codes: A list of http codes to retry.
-            max_retry: See utils.GenericRetry.
-            sleep: See utils.GenericRetry.
-            backoff_factor: See utils.GenericRetry.
+            max_retry: See utils.Retry.
+            sleep: See utils.Retry.
+            backoff_factor: See utils.Retry.
             other_retriable_errors: A tuple of error types that should be retried
                                     other than errors.HttpError.
 
@@ -210,12 +211,10 @@ class BaseCloudApiClient(object):
                 return True
             return False
 
-        return utils.GenericRetry(_Handler,
-                                  max_retry=max_retry,
-                                  functor=self.ExecuteOnce,
-                                  sleep=sleep,
-                                  backoff_factor=backoff_factor,
-                                  api=api)
+        return utils.Retry(
+             _Handler, max_retries=max_retry, functor=self.ExecuteOnce,
+             sleep_multiplier=sleep, retry_backoff_factor=backoff_factor,
+             api=api)
 
     def BatchExecuteOnce(self, requests):
         """Execute requests in a batch.
@@ -259,9 +258,9 @@ class BaseCloudApiClient(object):
             requests: A dictionary where key is request id picked by caller,
                       and value is a apiclient.http.HttpRequest.
             retry_http_codes: A list of http codes to retry.
-            max_retry: See utils.GenericRetry.
-            sleep: See utils.GenericRetry.
-            backoff_factor: See utils.GenericRetry.
+            max_retry: See utils.Retry.
+            sleep: See utils.Retry.
+            backoff_factor: See utils.Retry.
             other_retriable_errors: A tuple of error types that should be retried
                                     other than errors.HttpError.
 
