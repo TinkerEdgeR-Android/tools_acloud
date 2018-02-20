@@ -157,10 +157,9 @@ class StorageClient(base_cloud_client.BaseCloudApiClient):
         Raises:
             errors.ResourceNotFoundError: when file is not found.
         """
-        item = utils.RetryException(errors.ResourceNotFoundError,
-                                    max_retry=self.GET_OBJ_MAX_RETRY,
-                                    functor=self.Get,
-                                    sleep=self.GET_OBJ_RETRY_SLEEP,
-                                    bucket_name=bucket_name,
-                                    object_name=object_name)
+        item = utils.RetryExceptionType(
+                errors.ResourceNotFoundError,
+                max_retries=self.GET_OBJ_MAX_RETRY, functor=self.Get,
+                sleep_multiplier=self.GET_OBJ_RETRY_SLEEP,
+                bucket_name=bucket_name, object_name=object_name)
         return item["selfLink"]
