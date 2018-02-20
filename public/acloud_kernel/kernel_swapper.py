@@ -147,8 +147,8 @@ class KernelSwapper(object):
             subprocess.CalledProcessError: For any non-zero return code of
                                            host_cmd.
         """
-        utils.GenericRetry(
-            handler=lambda e: isinstance(e, subprocess.CalledProcessError),
-            max_retry=2,
+        utils.Retry(
+            retry_checker=lambda e: isinstance(e, subprocess.CalledProcessError),
+            max_retries=2,
             functor=lambda cmd: subprocess.check_call(cmd, shell=True),
             cmd=host_cmd)
